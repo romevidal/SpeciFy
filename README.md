@@ -18,20 +18,25 @@ Universities struggle to schedule special topics courses due to:
 
 This application solves that by:
 
-- Tracking student interest
-- Collecting availability
-- Automatically recommending optimal time slots
+- Tracking student interest,
+- Collecting availability,
+- And, providing professors:
+    - optimal time-slot suggestions,
+    - custom time-slot guards to meet their preferences and constraints,
+    - And, downloadable datasets for portability.
 
 ---
 
-# 🚀 Demo
+# 🚀 Try it out
 
-- Live URL: [www.specify.tools](https://www.specify.tools/)
+Who wants to scroll to the top for a link, am I right? 😅 Here it is again: **[www.specify.tools](https://www.specify.tools/)**
+
+You can use the credentials below to log in when you get there. And in case you forget, they'll be on the login page too 😁
 
 ### Demo Login Credentials
 
-- **Student:** `student9@g.rwu.edu`
-- **Professor:** `prof10@rwu.edu`
+- Log in as a **Student: `student9@g.rwu.edu`**
+- Log in as a **Professor: `prof10@rwu.edu`**
 
 > Demo accounts bypass email verification for testing purposes following the above format using any number between 1 and 10.
 
@@ -39,7 +44,9 @@ This application solves that by:
 
 # 🏗 Architecture Overview
 
-SpeciFy follows a modern full-stack architecture:
+Glass houses are cool looking, but I wouldn't want to live in one. So I went with something that could get me started quickly, while providing all of the infrastructure needed to play it safe.
+
+That's why SpeciFy follows a modern full-stack architecture:
 
 - **Frontend:** Next.js ( App Router )
 - **Backend:** Next.js ( Server Actions )
@@ -51,25 +58,37 @@ SpeciFy follows a modern full-stack architecture:
 
 ---
 
-## 🔐 Authentication Flow (Resend Magic Link)
+# 🔐 Authentication Flow (Resend Magic Link)
 
-1. User enters university email
-2. A secure magic link is sent via Resend
-3. User clicks verification link
-4. (a) If user exists → session created
-4. (b) If user does not exist:
-    - Role inferred from email domain
-        - `@g.rwu.edu` → Student
-        - `@rwu.edu` → Professor
-    - User provides name
-    - User record created in database
-4. (c) If demo user, → demo session created**
-6. Session established
-7. User redirected to dashboard
+Since this was intended for a university with it's own layer of authenticated access, there wasn't much of need to rewrite the wheel.
+
+So to keep it simple: SpeciFy uses the university's own email domain conventions to access a university-specific portion of the application, where students are exclusively assigned a *g.rwu.edu* domain and professors are assigned an *rwu.edu* domain).
+
+Thus, the flow for signing in is as simple as providing an email and clicking the link in the user's email to verify. And since we're not collecting highly sensitive information here, this works for our use case.
+
+The flow is as follows:
+
+
+1. User submits university email
+2. Validation:
+    - `demo email`: redirect to dashboard
+    - email `exists and acceptable`: continue to step 3
+    - email `does not exist`, but `acceptable`: establish record and continue to step 3.
+    - email `does not exist` and `unacceptable`: reject and display an error message
+3. Secure magic link sent to email via Resend
+4. Verification:
+    - user `clicks link` within 30 seconds: Session established, redirect to dashboard
+    - user `doesn't click link` within 30 seconds: link no longer works
+
+Now one might say that there's an unaccounted-for edge case 🙄: if the email has a valid domain, but the email doesn't actually exist.
+
+Luckily, an amateur cybersecurity guy happened to be present during the design phase (this guy 🙋‍♂️), and there is a limiter in place to limit the number of requests that can be made within a given time-span. 
+
+** *Side note: I could read a book or two on cybersecurity. I'm relatively weak on the subject.*
 
 ---
 
-## High-Level Application Flow
+# 🔎 High-Level Application Flow
 
 1. User authenticates via magic link
 2. Role determined (Student or Professor)
