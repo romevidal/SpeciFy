@@ -1,12 +1,14 @@
 <img width="1280" height="640" alt="SpeciFy-social-preview-transparent" src="https://github.com/user-attachments/assets/48276092-47c2-48eb-a336-cc4a19657b2a" />
 
-# SpeciFy, Scheduling System
+# SpeciFy Scheduling System
 
-Full-stack academic scheduling optimization platform (*full documentation available here → GH Pages*)
+**Full-stack academic scheduling optimization platform (all source code is hosted in a private repository).**
+
+Click here to view the **[Live Documentation / Final Report](https://romevidal.github.io/SpeciFy/)** or visit **[www.specify.tools](https://www.specify.tools/)** for the live demo.
 
 ---
 
-# 🚨 Problem
+# 🚨 Purpose
 
 Universities struggle to schedule special topics courses due to:
 
@@ -28,10 +30,10 @@ This application solves that by:
 
 ### Demo Login Credentials
 
-- **Student:** `student{any #, 1 through 10}@g.rwu.edu`
-- **Professor:** `prof{any #, 1 through 10}@rwu.edu`
+- **Student:** `student9@g.rwu.edu`
+- **Professor:** `prof10@rwu.edu`
 
-> Demo accounts bypass email verification for testing purposes.
+> Demo accounts bypass email verification for testing purposes following the above format using any number between 1 and 10.
 
 ---
 
@@ -39,12 +41,13 @@ This application solves that by:
 
 SpeciFy follows a modern full-stack architecture:
 
-- **Frontend:** Next.js (App Router)
-- **Backend:** Next.js Server Actions
-- **Database:** PostgreSQL 15
-- **ORM:** Prisma
-- **Authentication:** NextAuth (Email Magic Link via Resend)
-- **Hosting:** Vercel
+- **Frontend:** Next.js ( App Router )
+- **Backend:** Next.js ( Server Actions )
+- **Database:** Supabase ( PostgreSQL 15 )
+- **ORM:** Prisma Adapter ( Custom APIs )
+- **Authentication:** NextAuth & Resend ( Email Magic Link )
+- **DevOps:** GitHub Actions ( CI/CD Pipeline )
+- **Hosting:** Vercel & GitHub Secrets
 
 ---
 
@@ -70,11 +73,10 @@ SpeciFy follows a modern full-stack architecture:
 
 1. User authenticates via magic link
 2. Role determined (Student or Professor)
-3. Professors create courses via server actions
-4. Students express interest via server actions
-5. Students submit availability via server actions
-6. Scheduling engine aggregates data
-7. Optimal time slot is recommended
+3. Professors create courses
+4. Students express interest/submit availability
+5. Scheduling engine aggregates data
+6. Professors receive viewable analytics and downloadable datasets
 
 ---
 
@@ -113,21 +115,21 @@ SpeciFy follows a modern full-stack architecture:
 
 ## CSV Exports
 
-- Downloadable Recommendation file
-- Downloadable Summary file
-- Downloadable Detailed Summary file
+- Downloadable Recommended Dataset
+- Downloadable Selected Dataset
+- Downloadable Full Dataset
 
 ---
 
 # 🧠 Design Decisions
 
-- **Next.js** – Unified frontend + server actions backend
-- **TypeScript** – Strong typing for maintainability
-- **Prisma ORM** – Type-safe queries and schema migrations
-- **NextAuth (Email Provider)** – Secure authentication abstraction
-- **Resend** – Reliable transactional email delivery
-- **PostgreSQL 15** – Stable relational database
-- **Vitest** – Fast TypeScript-native testing framework
+- **Next.js** – For a quick-start and unified frontend + backend (via server actions)
+- **TypeScript** – For increased reliability and maintainability (via static typing)
+- **Prisma ORM** – For type-safe querying and schema migrations
+- **NextAuth (Email Provider)** – Secure authentication abstraction through domain specification
+- **Resend** – For reliable transactional email delivery
+- **PostgreSQL 15** – For a stable relational database
+- **Vitest** – For it's fast TypeScript-native testing framework
 
 ---
 
@@ -171,6 +173,7 @@ SpeciFy follows a modern full-stack architecture:
 - Interest
 - Availability
 - TimeSlot
+- ...
 
 ---
 
@@ -188,6 +191,7 @@ Core actions include:
 - expressInterest()
 - submitAvailability()
 - getScheduleRecommendation()
+- ...
 
 All database access is performed through a **singleton Prisma client (`getPrismaClient`)**.
 
@@ -205,88 +209,22 @@ All database access is performed through a **singleton Prisma client (`getPrisma
 
 ---
 
-# ⚙️ Requirements
+# ⚙️ Environment Requirements
 
 - Node.js 18+
-- PostgreSQL 15+ (Supabase recommended)
-- npm >=9 (or yarn)
+- PostgreSQL 15+
+- npm >= 9
 - Next.js 16+
 - TypeScript
 - Prisma
-- Resend account
-
----
-
-# 🛠 Local Development Setup
-
-## 1. Clone repository
-
-```
-git clone https://github.com/ZDowntime/SpeciFy.git
-```
-
----
-
-## 2. Install dependencies
-
-```
-npm install
-```
-
----
-
-## 3. Configure environment variables
-
-Create `.env.local`:
-
-```
-DATABASE_URL=
-EMAIL_SERVER=
-EMAIL_FROM=
-RESEND_API_KEY=
-NEXTAUTH_SECRET=
-NEXTAUTH_URL=http://localhost:3000
-```
-
----
-
-## 4. Run migrations
-
-```
-npx prisma migrate dev
-```
-
----
-
-## 5. Start development server
-
-```
-npm run dev
-```
+- Resend
+- Vitest
 
 ---
 
 # 🧪 Testing (Vitest)
 
-Run tests:
-
-```
-npm run test
-```
-
-Watch mode:
-
-```
-npx vitest
-```
-
-Coverage:
-
-```
-npx vitest run --coverage
-```
-
-Core flows tested:
+Core flows covered:
 
 - Authentication logic
 - Role inference
@@ -295,6 +233,7 @@ Core flows tested:
 - Interest submission (server actions)
 - Availability submission (server actions)
 - Scheduling algorithm
+- ...
 
 ---
 
@@ -315,7 +254,7 @@ Core flows tested:
 
 - Assumes fixed weekly recurring time slots
 - No timezone support
-- No real-time updates
+- No notifications
 
 ---
 
@@ -325,6 +264,7 @@ Core flows tested:
 - Advanced filtering
 - Analytics dashboard
 - Admin dashboard
+- Full mobile accessibility
 
 ---
 
