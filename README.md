@@ -54,7 +54,7 @@ That's why SpeciFy follows a modern full-stack architecture:
 - **ORM:** Prisma Adapter ( Custom APIs )
 - **Authentication:** NextAuth & Resend ( Email Magic Link )
 - **DevOps:** GitHub Actions ( CI/CD Pipeline )
-- **Hosting:** Vercel & GitHub Secrets
+- **Deployment:** Vercel & GitHub Secrets
 
 ---
 
